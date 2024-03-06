@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kersOS Blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            color: #333;
+            background: rgb(238,174,202);
+            background: -moz-radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+            background: -webkit-radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+            background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#eeaeca",endColorstr="#94bbe9",GradientType=1);
+        }
+
+        header {
+            background: rgb(255, 255, 255);
+            padding: 1em;
+            text-align: center;
+            color: rgb(238,174,202)
+        }
+
+        h1 {
+            font-weight: 600;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2em auto;
+            padding: 1em;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        article {
+            margin-bottom: 2em;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .post {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .post-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .post-meta {
+            color: #777;
+            font-size: 0.8em;
+        }
+        .header-image {
+            max-width: 100%;
+            height: auto;
+        }
+        .references{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>kersOS Blog</h1>
+    </header>
+
+    <main>
+        <div class="post">
+            <div class="post-header">
+                <h1>One Woman Army</h1>
+                <h3>The Story of The 2019 Capital One Breach</h3>
+                <p class="post-meta">Published on <time datetime="2024-02-26">February 26, 2024</time></p>
+                <img class="header-image" src="img/m2_main-lobby_crop.jpg.avif" alt="Capital One Lobby">
+            </div>
+            
+            <div class="post-content">
+                <h2>Introduction</h2>
+                <p>
+                    From March 12, 2019, to July 19, 2019, Capital One, the seventh largest bank in the United States at the time, had a spy in their midst (Federal Reserve, 2019). The spy snuck into their cloud servers and made off with nearly 30 GB of Capital One credit application data. This included customer names, addresses, zip codes, phone numbers, email addresses, and more sensitive customer information. The thief also stole away with items such as social security numbers, transaction information, and some account numbers for Capital One credit card holders. As it turned out, the thief was not a nation-state threat actor nor an elite group of cybercriminals. Instead, it was a single woman, a former employee of Amazon named Paige Thompson. So, how did she do it?
+                </p>
+                <h2>Events of the Breach</h2>
+                <p>
+                    In 2014, Capital One made a decision that was unorthodox at the time. They moved all of their cloud computing to AWS, bringing their infrastructure into a public cloud instead of keeping their own private cloud (Novaes Neto et al., 2020). This unprecedented move for a company inside the financial industry would, in time, cause lots of trouble for Capital One. So, what were the events of this breach?
+                </p>
+                <ol>
+                    <li>
+                        Thompson hid her identity during her illegal access into Capital One’s databases using anonymizing services, primarily the Tor browser and a VPN from IPredator (Khan et al., 2022).
+                        <img src="img/Info 415 Project SS1.png" alt="A diagram depicting Paige Thompson using the Tor browser and an iPredator VPN to anonymize herself online.">
+                    </li>
+                    <li>
+                        She then utilized a misconfiguration in Capital One’s web application firewall (WAF) in order to query the AWS metadata service. This returned information about the management role of the EC2 server Thompson was accessing, which included temporary credentials for that role. (Khan et al., 2022).
+                        <img src="img/Info 415 Project SS 2.png" alt="A diagram depicting Paige Thompson exploiting a misconfigured firewall on a Capital One server and receiving access to elevated privileges.">
+                    </li>
+                    <li>
+                        The role gave Thompson elevated privileges to the EC2 server, allowing her to carry out a reverse proxy attack on that server. (Khan et al., 2022). 
+                        <img src="img/Info 415 Project Images.png" alt="A diagram depicting Paige Thompson carrying out a reverse proxy attack on a Capital One server.">
+                    </li>
+                    <li>
+                        Thompson accessed the Amazon S3 buckets associated with the server she was on and downloaded the sensitive data within those buckets. Thompson was also believed to be able to decrypt the data with her privileges (Khan et al., 2022).
+                        <img src="img/Info 415 Project Images (1).png" alt="A diagram depicting Paige Thompson receiving sensitive customer data and exfiltrating it to her computer">
+                    </li>
+                </ol>
+                <h2>Analysis of Vulnerabilities</h2>
+                <p>
+                    Now, with a brief overview of the events out of the way, what does all this mean? Let's take a look at each step more closely and explore the cybersecurity jargon found inside. Firstly, Thompson used the Tor browser while carrying out her activities. This browser helps to anonymize what someone is doing on the web by sending their internet traffic through many different nodes operated by people all over the world. This means that your web traffic gets jumbled all across the world, making it much harder for someone to track that data. She also used a VPN, or virtual private network, which further helps anonymize her data by displaying the IP address of the VPN instead of her own. So, with these tools, Thompson became much harder to track, and the sense of safety emboldened her to make her next moves. The next thing Thompson did was exploit the misconfigured WAF on Capital One’s EC2 server. The job of the web application firewall is to check the network traffic going in and out of applications on the company’s network for malicious code, queries, and anything else that is suspicious (Burton, 2020). So, if the WAF was configured incorrectly, it might not block everything it should, which is what allowed Thompson to execute a malicious query that gave her access to a management role with escalated privileges. She sent this query to the AWS metadata service, which gave Thompson information on the management role associated with the EC2 server she was trying to access, as well as a temporary login to that role. This brings us to step three, where Thompson carried out a reverse proxy attack. To understand what a reverse proxy attack is, we need to know what a reverse proxy is. A reverse proxy server is a server that is “in front” of other servers in a network. Users interact with the reverse proxy server, and then that server interacts with the necessary servers connected to it in order to fulfill the user’s request (What Is a Reverse, n.d.). This allows for there to be a buffer between a user base and servers that hold sensitive information, and it makes it so there is only one access point that has to be monitored for servers with sensitive information. But, if someone were able to take control of the reverse proxy server, they could access all the sensitive information as well. Through her newly acquired role, Thompson had an elevated level of privilege, which she simply used to query the reverse proxy for the customer data it had access to, which is what brings us to the fourth step in the attack. In Amazon S3, a cloud storage service that Capital One uses, every “object” or piece of data is stored inside buckets, which are used for categorization. Thompson queried the reverse proxy to look at the contents of all these buckets and afterwards downloaded those contents onto her computer. It is also believed that the role Thompson had access to gave her the ability to decrypt the stolen data, as it was stored encrypted. 
+                </p>
+                <h2>Capital One's Response</h2>
+                <p>
+                    After this attack, Capital One had to react quickly to protect the data of their customers and minimize financial impact. One of the first actions taken by Capital One was the immediate addressing of the configuration vulnerability exploited by the unauthorized individual. By swiftly rectifying this vulnerability, the company aimed to prevent any further unauthorized access and potential compromise of customer data (Capital One Announces Data Security Incident | Capital One, 2019). To ensure that the vulnerability was patched, the company also claims to have invested heavily in its cybersecurity. They also stated that they will learn from this attack (Information on the Capital One cyber incident | Capital One, 2019). Thereafter, Capital One recognized the severity of the breach and collaborated closely with federal law enforcement agencies. They worked alongside the FBI’s Seattle Field Office and U.S. Attorneys to lead the investigation of the breach. This collaboration resulted in the prompt arrest of the perpetrator, Thompson, who was in custody until very recently (Capital One, 2019).
+                </p>
+                <p>
+                    To help those who were affected, Capital One offered free credit monitoring and identity protection services to all affected individuals. Customers also had the option to freeze their credit at all three major credit bureaus (Equifax, Experian, and TransUnion) to safeguard further their information (What you need to know about Capital One data breach affecting more than 100 million customers | Molina, 2019). Capital One then issued a public statement to reassure its customers. The company emphasized that credit card account numbers and log-in credentials were not compromised, and 99% of Social Security numbers remained secure. This transparent communication aimed to maintain customer trust and provide clarity amidst the uncertainty caused by the breach (Capital One, 2019). Capital One continued to analyze the stolen files even after the initial incident response. In January 2021, the company discovered that approximately 4,700 U.S. credit card customers or applicants had their Social Security Numbers accessed. They let the public know exactly which documents and information were accessed by Thompson. They sent emails and letters to the customers who were directly impacted by the breach. These letters directed users to contact Capital One and directed them to continuously monitor their credit card accounts for any signs of fraud. In continued efforts, they advised those affected not to respond to possible phishing emails from fake “Capital One” adversaries and to install antivirus software on their devices.
+                </p>
+                <p>
+                    In 2022, Capital One agreed to a $190 million settlement to compensate affected individuals (Capital One Data Breach Class Action Settlement | Capital One, 2022 ). The plaintiffs against Capital One argued that if Capital One had better cybersecurity implemented, then Thompson wouldn’t have been able to gain access to the configuration vulnerability. Additionally, in this case, Capital One admitted that they had known about the vulnerability but had done nothing to fix it (Capital One $190 Million Data Breach Settlement: Today Is the Last Day to Claim Money | Avery, 2022).  In the end, Capital One just agreed to pay out money to the customers who were affected by the breach. They did this in the interest of saving time and retaining their customers' trust.
+                </p>
+                <h2>How Were Customers Affected</h2>
+                <p>
+                    As a result of the breach, various customers associated with Capital One were impacted. While accessing the company’s data, Paige Thompson downloaded information from over one hundred million customers, including individuals from the United States and Canada (Unpacking the Capital One Breach: Key Lessons & Takeaways | Infosec, 2019). Among the leaked data was sensitive personal information, including over one hundred thousand social security numbers, over seventy thousand bank account numbers, and other personally identifiable information (Geraldo, 2022). Given the amount of personal data breached by Paige Thompson, customers were placed at an elevated risk for various threats, including identity theft and financial fraud. Upon recognition of the breach, customers were notified of the breached information, resulting in a process of monitoring and other risk avoidance actions to ensure their information is not misused. In response to the breach, Capital One states, “Customers are encouraged to enroll in credit card account alerts to help them keep track of activity on their accounts. Customers can sign in to online banking and set up text or email alerts, based on their preferences” (2019 Capital One Cyber Incident | What to Do | Capital One, 2019). Clear from the statement, impacted customers were required to take safeguarding steps to mitigate the risk of threats associated with leaked personally identifiable information. Given the understanding of how the released information could have larger implications if misused, the breach caused heightened stress for affected customers. 
+                </p>
+                <p>
+                    Among the personal data breached during the incident, the leaked social security numbers pose the greatest threat to impacted individuals. As a result of the breach, thousands of social security numbers were released, leaving customers vulnerable to identity theft. In an article from the Social Security Administration, the potential impact of this threat is revealed, “Identity thieves can use your number and your good credit to apply for more credit in your name. Then, when they use the credit cards and don’t pay the bills, it damages your credit” (Office of Communications, 2016). Considering how Paige Thompson published the stolen data, which included the social security numbers, to Github, any threat actor with access could use the information to commit identity theft and damage affected individuals' credit. Alongside the leaked social security numbers, released bank account numbers added an additional threat potential for customers. Tim Maxwell from Experian expresses, “If someone gains access to your bank account and routing numbers, they can use the information to fraudulently withdraw or transfer money from your account. They can also create fake checks, claim your tax return or commit other forms of financial fraud” (Maxwell, 2024). The release of bank account numbers during the breach provided threat actors with the capability to take out money from customer bank accounts. As a result, customers had to continuously monitor their bank statements for any sign of fraudulent activity. 
+                </p>
+                <h2>What Consequences Did Capital One Face? </h2>
+                <p>
+                    Considering the significant impact of the breach on Capital One customers, the company has faced various consequences. Given the many individuals directly affected, the breach raised concerns for Capital One’s ability to protect customer information. Following the incident, customers have become less confident in the company’s ability to safeguard their personal information (Team, 2021). Understanding how a flaw in Capital One’s system led to the threat actor’s ability to access sensitive data, customers are able to draw conclusions about imperfections in the company’s cybersecurity and their commitment to keeping data secure from outside threats. In an attempt to alleviate concern among the impacted individuals, Capital One offered free credit reports for customers to review (2019 Capital One Cyber Incident | What to Do | Capital One, 2019). While the free credit monitoring may comfort individuals, the offering demonstrates how Capital One recognizes the damage that could come from the breached data. Furthermore, providing customers with free reports highlights Capital One’s care for customers, but also reveals their understanding of how the leaked personal information could have a severe impact on the affected individuals. Following the breach, Capital One settled a class action lawsuit through an agreement to pay one-hundred ninety million dollars to qualifying affected customers, on top of an eighty million dollar fine (Today Is the Last Day to File a Claim in Capital One’s $190 Million Data Breach Settlement, 2022). 
+                </p>
+                <h2>Aftermath of the Breach</h2>
+                <p>
+                    The Capital One attack inspired many researchers and cybersecurity analysts to devise data security recommendations that can better arm and prepare organizations for similar future attacks. This includes recommendations relating to access management control, proper security control configuration, proper compliance framework implementation, consideration of a shared responsibility model, social media monitoring, and even employee morale.
+                </p>
+                <p>
+                    To start, a case study conducted by individuals at MIT allowed for recommendations to be created based on an analysis of the breach. It was found that Capital One likely decided to interpret the “applicability of a compliance control” as they saw fit, which might have been a key mistake: “In the Capital One case, access management control according to NIST requirement PR.AC-1 was applied, but without considering the premise of lease privilege (PR.AC-4), which allowed the attacker to gain the necessary access to exfiltrate the data” (Novaes Neto et al., 2020). Additionally, the researchers at MIT identified that “existing security controls applied to Cloud Computing storage properties were not properly configured to prevent the access and exfiltration of sensitive information,” meaning that moving forward, organizations must be extremely careful and considerate in maintaining proper configuration of their security controls. Not only this, but ensuring that the proper compliance frameworks and regulations are effectively implemented solidifies the extra and necessary layer of security needed for these systems. The paper by MIT also mentions that “Even before the incident, some Capital One cyber staff raised concerns about employee[s’] morale” (Novaes Neto et al., 2020). This emphasizes how imperative it is for organizations to provide support and raise motivation for workers to do their best at work. Otherwise, as the cybersecurity unit weakens, the security of the organization will weaken.
+                </p>
+                <p>
+                    A group of cybersecurity analysts from the ACM Digital Library also performed an analysis of the cyber incident and formulated concrete recommendations for organizations moving forward on the front of cybersecurity. They recommended that companies deeply consider the shared-responsibility model, that “While developers and architects should use the tools, guidelines, and best practices provided by the cloud provider, they must understand their responsibility to ensure the security of applications in the cloud by verifying the adequacy of the deployed tools and technologies” (Khan et al., 2023). This calls for enhanced oversight and accountability over services that these companies utilize.
+                </p>
+                <p>
+                    An article by Infosec analyzes and lists the lessons learned from the Capital One breach. The author included a key point that the cyber incident highlighted the importance of “Server-side request forgery [which] is a known attack vector, and, according to Evan Johnson of Cloudflare, is the biggest security issue facing users of public clouds” (Poston, 2019). The article also mentions a strategy that all organizations and companies should adopt moving forward, which is an increased and thorough monitoring of social media. As previously mentioned, the leaked data has been discussed many times on social media platforms. Still, they were only brought to the attention of Capital One through an email notifying them of the incident. The article states that had Capital One been monitoring mentions of the company on social media, “they might have discovered the beach themselves and remediated it more quickly” (Poston, 2019).
+
+                </p>
+                <p>
+                    Like any data breach, points of weaknesses may be found through analysis. However, it is the action taken beyond the identification of these mistakes that allows for growth and prevention of future attacks. These lessons were identified by cyber analysts and researchers, and hopefully paved the path and inspired further improvement in data security for other companies and organizations on these fronts.
+
+                </p>
+                <h2>Personal Reflections</h2>
+                <p>
+                    <b>Keaton: </b>
+                    In reflection of the breach events, aftermath, and consideration for the impact on customers, I believe the Capital One breach serves an important lesson for organization security and response. Recognizing how the company was breached and the sensitive information released as a result underscores the importance of advanced security protocols to effectively secure data. Furthermore, the breach highlights the necessity for lessons learned from the attack, recognizing how the company was breached, and taking action to patch vulnerabilities. While the Capital One breach may have displayed how the company is unable to safeguard customer information, I believe the quick response and action taken post-breach showcase the company’s care for customers. Though some customers may have lost trust in Capital One, I believe their methods for remedying the incident should rebuild trust among users.  
+                </p>
+                <p>
+                    <b>Netra: </b>
+                     It was surprising to see how easily the most personal and sensitive information could be breached, especially from one of the biggest banking companies in the industry. Analyzing specific security guidelines and measures that Capital One grew lenient with was eye-opening, and hopefully became a dire warning to other companies of how important it is to triple check their threat models and meticulously design their defensive systems, carefully adhering to guidelines and standards that exist in the cybersecurity industry. Insecurity within banking company data is unacceptable, in that it affects so many lives.  
+                </p>
+                <p>
+                    <b>Grayson: </b>
+                   Personally, I think that this is just another example of major corporations not valuing cybersecurity. As was discussed, there were complaints and concerns surrounding cybersecurity at the bank before this incident, but they seemed to have been disregarded. I cannot say that this is surprising coming from a corporation such as Capital One, where profits are everything, but they could have dodged a $190 million dollar fine as well as lots of negative press if they had invested a fraction of that money into more staff. 
+                </p>
+                <p>
+                    <b>Viru: </b>
+                    As someone who banks with Capital One, I was surprised that I had never heard about this breach before. Knowing that something like this had occurred in the company’s past was concerning and may have influenced my initial decision to open an account with the company. It wasn’t reassuring knowing that Capital One knew that there could be a threat when the firewall was configured, but they chose to do nothing about it. As a customer, knowing that Capital One ignored such issues makes me trust them less and makes me want to move my assets elsewhere. 
+                </p>
+            </div>
+            
+            <div class="post-footer">
+                <h4 class="references">References</h4>
+                <!-- Avery, D. (2022, September 30). Capital One $190 Million Data Breach Settlement -->
+<p>
+    <a href="https://www.cnet.com/personal-finance/capital-one-190-million-data-breach-settlement-today-is-deadline-to-file-claim/" target="_blank">
+        Avery, D. (2022, September 30). Capital One $190 Million Data Breach Settlement: Today Is the Last Day to Claim Money. Cnet.
+    </a>
+</p>
+
+<!-- Burton, D. (2020, November 16). The Dangers of Firewall Misconfigurations and How to Avoid Them -->
+<p>
+    <a href="https://www.akamai.com/blog/security/the-dangers-of-firewall-misconfigurations-and-how-to-avoid-them" target="_blank">
+        Burton, D. (2020, November 16). The Dangers of Firewall Misconfigurations and How to Avoid Them. Akamai.
+    </a>
+</p>
+
+<!-- Capital One Announces Data Security Incident (2019, July 28) -->
+<p>
+    <a href="https://www.capitalone.com/about/newsroom/capital-one-announces-data-security-incident/" target="_blank">
+        Capital One Announces Data Security Incident. (2019, July 28). Capital One.
+    </a>
+</p>
+
+<!-- Federal Reserve Statistical Release: Large Commercial Banks (2019, June 30) -->
+<p>
+    <a href="https://www.federalreserve.gov/releases/lbr/20190630/default.htm" target="_blank">
+        Federal Reserve Statistical Release: Large Commercial Banks. (2019, June 30). Federal Reserve.
+    </a>
+</p>
+
+<!-- Geraldo, R. (2022, October 4). No prison for Seattle hacker behind Capital One $250M data breach -->
+<p>
+    <a href="https://www.seattletimes.com/business/no-prison-for-seattle-hacker-behind-capital-one-250m-data-breach/" target="_blank">
+        Geraldo, R. (2022, October 4). No prison for Seattle hacker behind Capital One $250M data breach. The Seattle Times.
+    </a>
+</p>
+
+<!-- Identities and credentials are issued, managed, verified, revoked, and audited for authorized devices, users, and processes - CSF Tools (2021, May 16) -->
+<p>
+    <a href="https://csf.tools/reference/nist-cybersecurity-framework/v1-1/pr/pr-ac/pr-ac-1/" target="_blank">
+        Identities and credentials are issued, managed, verified, revoked, and audited for authorized devices, users and Processes - CSF Tools. CSF Tools - The Cybersecurity Framework for Humans. (2021, May 16).
+    </a>
+</p>
+
+<!-- Identity Theft and Your Social Security Number (2021, July) -->
+<p>
+    <a href="https://www.ssa.gov/pubs/EN-05-10064.pdf" target="_blank">
+        Identity Theft and Your Social Security Number. (2021, July). Social Security Administration.
+    </a>
+</p>
+
+<!-- If Your Information was Accessed in the 2019 Capital One Data Breach, You Might be Eligible for Cash Benefits from this $190 Million Class Action Settlement (2022) -->
+<p>
+    <a href="https://www.capitalonesettlement.com/en" target="_blank">
+        If Your Information was Accessed in the 2019 Capital One Data Breach, You Might be Eligible for Cash Benefits from this $190 Million Class Action Settlement. (2022). Capital One Settlement.
+    </a>
+</p>
+
+<!-- Khan, S., Kabanov, I., Hua, Y., & Madnick, S. (2022). A systematic analysis of the Capital One data breach: Critical lessons learned -->
+<p>
+    <a href="https://doi.org/10.1145/3546068" target="_blank">
+        Khan, S., Kabanov, I., Hua, Y., & Madnick, S. (2022). A systematic analysis of the capital one data breach: Critical lessons learned. ACM Transactions on Privacy and Security, 26(1), 1-29.
+    </a>
+</p>
+
+<!-- Maxwell, T. (2024, January 21). What Can Someone Do With Your Bank Account and Routing Numbers? -->
+<p>
+    <a href="https://www.experian.com/blogs/ask-experian/what-can-someone-do-with-your-bank-account-and-routing-numbers/" target="_blank">
+        Maxwell, T. (2024, January 21). What Can Someone Do With Your Bank Account and Routing Numbers? Experian.
+    </a>
+</p>
+
+<!-- Molina, B. (2019, July 30). What you need to know about Capital One data breach affecting more than 100 million customers -->
+<p>
+    <a href="https://www.usatoday.com/story/money/2019/07/30/capital-one-data-breach-what-do-if-you-were-affected-and-know/1864628001/" target="_blank">
+        Molina, B. (2019, July 30). What you need to know about Capital One data breach affecting more than 100 million customers. Usa Today.
+    </a>
+</p>
+
+<!-- Novaes Neto, N., Madnick, S., de Paula, A. M. G., & Borges, N. M. (2020). A Case Study of the Capital One Data Breach -->
+<p>
+    <a href="https://web.mit.edu/smadnick/www/wp/2020-07.pdf" target="_blank">
+        Novaes Neto, N., Madnick, S., de Paula, A. M. G., & Borges, N. M. (2020). A Case Study of the Capital One Data Breach. Massachusetts Institute of Technology.
+    </a>
+</p>
+
+<!-- Poston, H. (2019, October 21). Lessons learned: The Capital One breach -->
+<p>
+    <a href="https://resources.infosecinstitute.com/topics/news/lessons-learned-the-capital-one-breach/" target="_blank">
+        Poston, H. (2019, October 21). Lessons learned: The Capital One breach. Infosec Institute.
+    </a>
+</p>
+
+<!-- Team, T., & Speculations, G. (2019, September 11). How could the recent data breach affect Capital One's stock? -->
+<p>
+    <a href="https://www.forbes.com/sites/greatspeculations/2019/09/11/how-could-the-recent-data-breach-affect-capital-ones-stock/?sh=61e88c4937b7" target="_blank">
+        Team, T., & Speculations, G. (2019, September 11). How could the recent data breach affect Capital One's stock? Forbes.
+    </a>
+</p>
+
+<!-- 2019 Frequently asked questions (2022, April 22) -->
+<p>
+    <a href="https://www.capitalone.com/digital/facts2019/faq/" target="_blank">
+        2019 Frequently asked questions. (2022, April 22). Capital One.
+    </a>
+</p>
+
+<!-- What is a reverse proxy? | Proxy servers explained (n.d.) -->
+<p>
+    <a href="https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/" target="_blank">
+        What is a reverse proxy? | Proxy servers explained. (n.d.). Cloudflare.
+    </a>
+</p>
+
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
