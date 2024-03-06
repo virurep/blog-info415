@@ -101,19 +101,19 @@
                 <ol>
                     <li>
                         Thompson hid her identity during her illegal access into Capital One’s databases using anonymizing services, primarily the Tor browser and a VPN from IPredator (Khan et al., 2022).
-                        <img src="img/Info 415 Project SS1.png" alt="A diagram depicting Paige Thompson using the Tor browser and an iPredator VPN to anonymize herself online.">
+                        <img src="Info 415 Project SS1.png" alt="A diagram depicting Paige Thompson using the Tor browser and an iPredator VPN to anonymize herself online.">
                     </li>
                     <li>
                         She then utilized a misconfiguration in Capital One’s web application firewall (WAF) in order to query the AWS metadata service. This returned information about the management role of the EC2 server Thompson was accessing, which included temporary credentials for that role. (Khan et al., 2022).
-                        <img src="img/Info 415 Project SS 2.png" alt="A diagram depicting Paige Thompson exploiting a misconfigured firewall on a Capital One server and receiving access to elevated privileges.">
+                        <img src="Info 415 Project SS 2.png" alt="A diagram depicting Paige Thompson exploiting a misconfigured firewall on a Capital One server and receiving access to elevated privileges.">
                     </li>
                     <li>
                         The role gave Thompson elevated privileges to the EC2 server, allowing her to carry out a reverse proxy attack on that server. (Khan et al., 2022). 
-                        <img src="img/Info 415 Project Images.png" alt="A diagram depicting Paige Thompson carrying out a reverse proxy attack on a Capital One server.">
+                        <img src="Info 415 Project Images.png" alt="A diagram depicting Paige Thompson carrying out a reverse proxy attack on a Capital One server.">
                     </li>
                     <li>
                         Thompson accessed the Amazon S3 buckets associated with the server she was on and downloaded the sensitive data within those buckets. Thompson was also believed to be able to decrypt the data with her privileges (Khan et al., 2022).
-                        <img src="img/Info 415 Project Images (1).png" alt="A diagram depicting Paige Thompson receiving sensitive customer data and exfiltrating it to her computer">
+                        <img src="Info 415 Project Images (1).png" alt="A diagram depicting Paige Thompson receiving sensitive customer data and exfiltrating it to her computer">
                     </li>
                 </ol>
                 <h2>Analysis of Vulnerabilities</h2>
